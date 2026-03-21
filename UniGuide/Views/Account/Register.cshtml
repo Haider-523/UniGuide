@@ -1,0 +1,126 @@
+﻿@model UniGuide.Models.RegisterViewModel
+@{
+    ViewData["Title"] = "Create Account";
+}
+
+<div style="min-height: 90vh; background: #f8f9fa;
+    display: flex; align-items: center; padding: 40px 0;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-7">
+
+                <div class="text-center mb-4">
+                    <h2 style="font-weight: 800; color: #1a1a2e;">Create Your Account</h2>
+                    <p style="color: #666;">Join UniGuide and find your perfect university</p>
+                </div>
+
+                <div style="background: white; border-radius: 20px; padding: 40px;
+                    box-shadow: 0 4px 24px rgba(0,0,0,0.08);">
+
+                    <form method="post">
+                        @Html.AntiForgeryToken()
+
+                        <div asp-validation-summary="ModelOnly"
+                             style="background: #fff3cd; border-radius: 10px;
+                            padding: 12px 16px; margin-bottom: 20px;
+                            color: #856404; font-size: 0.9rem;">
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Full Name</label>
+                                <input asp-for="FullName" class="form-control form-control-lg"
+                                       placeholder="e.g. Ahmed Ali"
+                                       style="border-radius: 10px;" />
+                                <span asp-validation-for="FullName" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Email Address</label>
+                                <input asp-for="Email" class="form-control form-control-lg"
+                                       placeholder="your@email.com"
+                                       style="border-radius: 10px;" />
+                                <span asp-validation-for="Email" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Password</label>
+                                <input asp-for="Password" type="password"
+                                       class="form-control form-control-lg"
+                                       placeholder="Min 6 characters"
+                                       style="border-radius: 10px;" />
+                                <span asp-validation-for="Password" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Confirm Password</label>
+                                <input asp-for="ConfirmPassword" type="password"
+                                       class="form-control form-control-lg"
+                                       placeholder="Repeat password"
+                                       style="border-radius: 10px;" />
+                                <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Inter Group</label>
+                                <select asp-for="InterGroup" class="form-select form-select-lg"
+                                        style="border-radius: 10px;">
+                                    <option value="">-- Select --</option>
+                                    <option value="FSc-PreEngineering">FSc Pre-Engineering</option>
+                                    <option value="FSc-PreMedical">FSc Pre-Medical</option>
+                                    <option value="ICS">ICS</option>
+                                    <option value="ICOM">ICOM</option>
+                                    <option value="FA">FA (Arts)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Marks (%)</label>
+                                <input asp-for="InterMarksPercent"
+                                       class="form-control form-control-lg"
+                                       placeholder="e.g. 78.5"
+                                       style="border-radius: 10px;" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">City</label>
+                                <select asp-for="City" class="form-select form-select-lg"
+                                        style="border-radius: 10px;">
+                                    <option value="">-- Select city --</option>
+                                    <option value="Lahore">Lahore</option>
+                                    <option value="Islamabad">Islamabad</option>
+                                    <option value="Karachi">Karachi</option>
+                                    <option value="Peshawar">Peshawar</option>
+                                    <option value="Quetta">Quetta</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Budget / Semester</label>
+                                <select asp-for="BudgetPerSemester"
+                                        class="form-select form-select-lg"
+                                        style="border-radius: 10px;">
+                                    <option value="0">-- Select budget --</option>
+                                    <option value="20000">Up to PKR 20,000</option>
+                                    <option value="50000">Up to PKR 50,000</option>
+                                    <option value="100000">Up to PKR 100,000</option>
+                                    <option value="150000">Up to PKR 150,000</option>
+                                    <option value="200000">Up to PKR 200,000</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button type="submit"
+                                style="width: 100%; margin-top: 24px;
+                            background: linear-gradient(135deg, #0f3460, #1a1a2e);
+                            color: white; border: none; padding: 16px;
+                            border-radius: 12px; font-size: 1rem;
+                            font-weight: 700; cursor: pointer;">
+                            🎓 Create My Account
+                        </button>
+
+                        <p class="text-center mt-3" style="color: #666; font-size: 0.9rem;">
+                            Already have an account?
+                            <a asp-action="Login" style="color: #0f3460; font-weight: 600;">
+                                Login here
+                            </a>
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

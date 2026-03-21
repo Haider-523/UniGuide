@@ -1,0 +1,68 @@
+﻿@model IEnumerable<UniGuide.Models.Program>
+@{
+    ViewData["Title"] = "Programs";
+    Layout = "_AdminLayout";
+}
+
+<div style="display: flex; justify-content: space-between;
+    align-items: center; margin-bottom: 24px;">
+    <div>
+        <h4 style="font-weight: 800; color: #1a1a2e; margin-bottom: 4px;">Programs</h4>
+        <p style="color: #888; margin: 0; font-size: 0.88rem;">
+            @Model.Count() programs in system
+        </p>
+    </div>
+    <a asp-action="AddProgram"
+           style="background: #0f3460; color: white; padding: 12px 24px;
+        border-radius: 10px; text-decoration: none;
+        font-weight: 600; font-size: 0.9rem;">
+        ➕ Add Program
+    </a>
+</div>
+
+<div style="background: white; border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06); overflow: hidden;">
+    <table class="table table-hover mb-0">
+        <thead style="background: #f8f9fa;">
+            <tr>
+                <th style="padding: 16px 20px; font-size: 0.82rem; color: #888;">Program</th>
+                <th style="padding: 16px; font-size: 0.82rem; color: #888;">University</th>
+                <th style="padding: 16px; font-size: 0.82rem; color: #888;">Fee/Sem</th>
+                <th style="padding: 16px; font-size: 0.82rem; color: #888;">Min Merit</th>
+                <th style="padding: 16px; font-size: 0.82rem; color: #888;">Seats</th>
+                <th style="padding: 16px; font-size: 0.82rem; color: #888;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var prog in Model)
+            {
+                <tr>
+                    <td style="padding: 16px 20px; font-weight: 600; color: #1a1a2e;">
+                        @prog.ProgramName
+                    </td>
+                    <td style="padding: 16px; color: #555; font-size: 0.88rem;">
+                        @prog.University?.Name
+                    </td>
+                    <td style="padding: 16px; color: #555;">
+                        PKR @prog.FeePerSemester.ToString("N0")
+                    </td>
+                    <td style="padding: 16px; color: #555;">@prog.MinMeritPercent%</td>
+                    <td style="padding: 16px; color: #555;">@prog.TotalSeats</td>
+                    <td style="padding: 16px;">
+                        <form asp-action="DeleteProgram" method="post"
+                              onsubmit="return confirm('Delete @prog.ProgramName?')">
+                            <input type="hidden" name="id" value="@prog.ProgramID" />
+                            <button type="submit"
+                                    style="background: #f8d7da; color: #721c24;
+                                border: none; padding: 6px 14px;
+                                border-radius: 6px; font-size: 0.8rem;
+                                font-weight: 600; cursor: pointer;">
+                                🗑️ Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

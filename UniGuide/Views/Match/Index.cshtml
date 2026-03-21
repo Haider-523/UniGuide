@@ -1,0 +1,383 @@
+﻿@model UniGuide.Models.MatchViewModel
+
+@{
+    ViewData["Title"] = "Find Your University";
+}
+
+<!-- Hero Section -->
+<div style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); 
+            padding: 60px 0 40px; margin-bottom: 0;">
+    <div class="container text-center text-white">
+        <h1 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 12px;">
+            🎓 Find Your Perfect University
+        </h1>
+        <p style="font-size: 1.1rem; opacity: 0.8; max-width: 550px; margin: 0 auto;">
+            Enter your details and UniGuide will instantly match you with the
+            best universities and programs you qualify for.
+        </p>
+    </div>
+</div>
+
+<!-- Search Form -->
+<div style="background: #f8f9fa; padding: 40px 0;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-9">
+                <div style="background: white; border-radius: 16px; 
+                            padding: 36px; box-shadow: 0 4px 24px rgba(0,0,0,0.08);">
+
+                    <h5 style="font-weight: 600; margin-bottom: 24px; color: #1a1a2e;">
+                        📋 Tell us about yourself
+                    </h5>
+
+                    <form method="post">
+                        @Html.AntiForgeryToken()
+                        <div class="row g-3">
+
+                            <!-- Inter Group -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">
+                                    Inter Group
+                                </label>
+                                <select name="InterGroup" class="form-select form-select-lg"
+                                        style="border-radius: 10px; border: 1.5px solid #dee2e6;">
+                                    <option value="">-- Select your group --</option>
+                                    <option value="FSc-PreEngineering" selected="@(Model.InterGroup == "FSc-PreEngineering")">FSc Pre-Engineering</option>
+                                    <option value="FSc-PreMedical" selected="@(Model.InterGroup == "FSc-PreMedical")">FSc Pre-Medical</option>
+                                    <option value="ICS" selected="@(Model.InterGroup == "ICS")">ICS (Computer Science)</option>
+                                    <option value="ICOM" selected="@(Model.InterGroup == "ICOM")">ICOM (Commerce)</option>
+                                    <option value="FA" selected="@(Model.InterGroup == "FA")">FA (Arts)</option>
+                                </select>
+                            </div>
+
+                            <!-- Marks -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">
+                                    Inter Marks (%)
+                                </label>
+                                <input type="number" name="Marks"
+                                       value="@(Model.Marks > 0 ? Model.Marks : "")"
+                                       min="33" max="100" step="0.1"
+                                       placeholder="e.g. 78.5"
+                                       class="form-control form-control-lg"
+                                       style="border-radius: 10px; border: 1.5px solid #dee2e6;" />
+                            </div>
+
+                            <!-- City -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">
+                                    Preferred City
+                                </label>
+                                <select name="City" class="form-select form-select-lg"
+                                        style="border-radius: 10px; border: 1.5px solid #dee2e6;">
+                                    <option value="">-- Select city --</option>
+                                    <option value="Lahore" selected="@(Model.City == "Lahore")">Lahore</option>
+                                    <option value="Islamabad" selected="@(Model.City == "Islamabad")">Islamabad</option>
+                                    <option value="Karachi" selected="@(Model.City == "Karachi")">Karachi</option>
+                                    <option value="Peshawar" selected="@(Model.City == "Peshawar")">Peshawar</option>
+                                    <option value="Quetta" selected="@(Model.City == "Quetta")">Quetta</option>
+                                </select>
+                            </div>
+
+                            <!-- Budget -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">
+                                    Max Budget / Semester (PKR)
+                                </label>
+                                <select name="Budget" class="form-select form-select-lg"
+                                        style="border-radius: 10px; border: 1.5px solid #dee2e6;">
+                                    <option value="">-- Select budget --</option>
+                                    <option value="20000" selected="@(Model.Budget == 20000)">Up to PKR 20,000</option>
+                                    <option value="50000" selected="@(Model.Budget == 50000)">Up to PKR 50,000</option>
+                                    <option value="100000" selected="@(Model.Budget == 100000)">Up to PKR 100,000</option>
+                                    <option value="150000" selected="@(Model.Budget == 150000)">Up to PKR 150,000</option>
+                                    <option value="200000" selected="@(Model.Budget == 200000)">Up to PKR 200,000</option>
+                                </select>
+                            </div>
+
+                            <!-- Submit -->
+                            <div class="col-12 mt-2">
+                                <button type="submit"
+                                        style="background: linear-gradient(135deg, #0f3460, #1a1a2e);
+                                               color: white; border: none; padding: 14px 40px;
+                                               border-radius: 10px; font-size: 1.05rem;
+                                               font-weight: 600; cursor: pointer;
+                                               transition: opacity 0.2s; width: 100%;">
+                                    🔍 Find My Universities
+                                </button>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Results Section -->
+@if (Model.SearchPerformed)
+{
+    <div style="background: #f8f9fa; padding: 20px 0 50px;">
+        <div class="container">
+
+            @if (Model.MatchedPrograms == null || !Model.MatchedPrograms.Any())
+            {
+                <!-- No Results -->
+                <div class="row justify-content-center">
+                    <div class="col-lg-6 text-center" style="padding: 40px 0;">
+                        <div style="font-size: 4rem;">😔</div>
+                        <h4 style="color: #1a1a2e; font-weight: 700; margin: 16px 0 8px;">
+                            No matches found
+                        </h4>
+                        <p class="text-muted">
+                            Try increasing your budget, selecting a different city,
+                            or checking your marks percentage.
+                        </p>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <!-- Results Header -->
+                <div class="row justify-content-center mb-4">
+                    <div class="col-lg-9">
+                        <div style="background: #d4edda; border-radius: 12px;
+                                    padding: 16px 24px; display: flex;
+                                    align-items: center; gap: 12px;">
+                            <span style="font-size: 1.5rem;">✅</span>
+                            <div>
+                                <strong style="color: #155724; font-size: 1.05rem;">
+                                    @Model.MatchedPrograms.Count program(s) found for you!
+                                </strong>
+                                <p style="color: #155724; margin: 0; font-size: 0.9rem;">
+                                    Sorted by HEC ranking — best universities first
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Result Cards -->
+                <div class="row justify-content-center">
+                    <div class="col-lg-9">
+                        @foreach (var program in Model.MatchedPrograms!)
+                        {
+                            <div style="background: white; border-radius: 16px;
+                                        padding: 28px; margin-bottom: 20px;
+                                        box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+                                        border-left: 5px solid #0f3460;
+                                        transition: transform 0.2s;"
+                                 onmouseover="this.style.transform='translateY(-3px)'"
+                                 onmouseout="this.style.transform='translateY(0)'">
+
+                                <div class="row align-items-start">
+                                    <div class="col-md-8">
+
+                                        <!-- University name -->
+                                        <p style="color: #0f3460; font-weight: 600;
+                                                  font-size: 0.85rem; margin-bottom: 4px;
+                                                  text-transform: uppercase; letter-spacing: 0.5px;">
+                                            🏛️ @System.Globalization.CultureInfo.CurrentCulture.TextInfo.ToTitleCase(program.University?.Name?.ToLower() ?? "")
+                                        </p>
+
+                                        <!-- Program name -->
+                                        <h5 style="font-weight: 700; color: #1a1a2e;
+                                                   margin-bottom: 12px; font-size: 1.2rem;">
+                                            @program.ProgramName
+                                        </h5>
+
+                                        <!-- Tags -->
+                                        <div style="display: flex; flex-wrap: wrap; gap: 8px;
+                                                    margin-bottom: 14px;">
+                                            <span style="background: #e8f4fd; color: #0f3460;
+                                                         padding: 4px 12px; border-radius: 20px;
+                                                         font-size: 0.82rem; font-weight: 500;">
+                                                📍 @program.University?.City
+                                            </span>
+                                            <span style="background: #f0f0f0; color: #444;
+                                                         padding: 4px 12px; border-radius: 20px;
+                                                         font-size: 0.82rem;">
+                                                🏛️ @program.University?.Type
+                                            </span>
+                                            <span style="background: #fff3cd; color: #856404;
+                                                         padding: 4px 12px; border-radius: 20px;
+                                                         font-size: 0.82rem;">
+                                                🏆 HEC #@program.University?.HECRanking
+                                            </span>
+                                            <span style="background: #d4edda; color: #155724;
+                                                         padding: 4px 12px; border-radius: 20px;
+                                                         font-size: 0.82rem;">
+                                                ⏱️ @program.DurationYears Years
+                                            </span>
+                                        </div>
+
+                                        <!-- Merit & seats -->
+                                        <p style="color: #666; font-size: 0.88rem; margin: 0;">
+                                            📊 Min Merit: <strong>@program.MinMeritPercent%</strong>
+                                            &nbsp;|&nbsp;
+                                            🪑 Seats: <strong>@program.TotalSeats</strong>
+                                            &nbsp;|&nbsp;
+                                            🌅 <strong>@program.Shift</strong> Shift
+                                        </p>
+                                    </div>
+
+                                    <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                                        <!-- Fee -->
+                                        <div style="margin-bottom: 16px;">
+                                            <p style="color: #666; font-size: 0.82rem;
+                                                      margin-bottom: 2px;">Fee per semester</p>
+                                            <h4 style="color: #0f3460; font-weight: 700;
+                                                       margin: 0;">
+                                                PKR @program.FeePerSemester.ToString("N0")
+                                            </h4>
+                                        </div>
+
+                                        <!-- View details button -->
+                                        <a asp-controller="University"
+                                               asp-action="Details"
+                                               asp-route-id="@program.University?.UniversityID"
+                                               style="display: inline-block; background: #0f3460;
+                                            color: white; padding: 10px 20px;
+                                            border-radius: 8px; text-decoration: none;
+                                            font-size: 0.9rem; font-weight: 500;
+                                            transition: opacity 0.2s;"
+                                               onmouseover="this.style.opacity='0.85'"
+                                               onmouseout="this.style.opacity='1'">
+                                            View University →
+                                        </a>
+                                        
+                                        <!-- ✅ NEW Save button -->
+                                        @if (Context.Session.GetInt32("StudentID") != null)
+                                        {
+                                            var isSaved = Model.SavedProgramIds.Contains(program.ProgramID);
+                                            <button id="save-btn-@program.ProgramID"
+                                                    onclick="toggleSave(@program.ProgramID, @program.University?.UniversityID,
+                                                '@Model.InterGroup', @Model.Marks, '@Model.City', @Model.Budget)"
+                                                    style="background: @(isSaved ? "#d4edda" : "#f8f9fa");
+                                                color: @(isSaved ? "#155724" : "#555");
+                                                border: 1.5px solid @(isSaved ? "#c3e6cb" : "#dee2e6");
+                                                padding: 10px 20px; border-radius: 8px;
+                                                font-size: 0.9rem; font-weight: 500;
+                                                cursor: pointer; transition: all 0.2s;">
+                                                @(isSaved ? "✅ Saved" : "🔖 Save")
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            <a asp-controller="Account" asp-action="Login"
+                                                   style="display: inline-block; background: #f8f9fa;
+                                                color: #555; padding: 10px 20px; border-radius: 8px;
+                                                text-decoration: none; font-size: 0.9rem;
+                                                border: 1.5px solid #dee2e6; margin-top: 8px;">
+                                                🔖 Login to Save
+                                            </a>
+                                        }
+
+                                        @* <!-- ✅ Save button -->
+                                        @if (Context.Session.GetInt32("StudentID") != null)
+                                        {
+                                            <form asp-controller="University" asp-action="Save" method="post"
+                                                  style="display: inline;">
+                                                <input type="hidden" name="universityId"
+                                                       value="@program.University?.UniversityID" />
+                                                <input type="hidden" name="programId"
+                                                       value="@program.ProgramID" />
+                                                <button type="submit"
+                                                        style="background: #d4edda; color: #155724; border: none;
+                                                    padding: 10px 16px; border-radius: 8px;
+                                                    font-size: 0.9rem; font-weight: 500; cursor: pointer;
+                                                    margin-top: 8px; transition: opacity 0.2s;"
+                                                        onmouseover="this.style.opacity='0.85'"
+                                                        onmouseout="this.style.opacity='1'">
+                                                    🔖 Save
+                                                </button>
+                                            </form>
+                                        } *@
+                                    </div>
+                                </div>
+
+                                <!-- Career paths -->
+                                @if (program.CareerPaths != null && program.CareerPaths.Any())
+                                {
+                                    <hr style="margin: 20px 0 16px; border-color: #f0f0f0;"/>
+                                    <p style="font-size: 0.85rem; font-weight: 600;
+                                              color: #444; margin-bottom: 10px;">
+                                        💼 Career paths after this degree:
+                                    </p>
+                                    <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                                        @foreach (var career in program.CareerPaths)
+                                        {
+                                            <div style="background: #f8f9fa; border-radius: 10px;
+                                                        padding: 8px 14px; font-size: 0.82rem;">
+                                                <strong>@career.JobTitle</strong>
+                                                <span style="color: #28a745; display: block;
+                                                             font-size: 0.78rem;">
+                                                    PKR @career.MinSalaryPKR.ToString("N0") –
+                                                    @career.MaxSalaryPKR.ToString("N0")
+                                                </span>
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script>
+        function toggleSave(programId, universityId, interGroup, marks, city, budget) {
+            var btn = document.getElementById('save-btn-' + programId);
+            var isSaved = btn.innerText.includes('Saved');
+
+            // Optimistic UI — change button immediately
+            if (isSaved) {
+                btn.innerText = '🔖 Save';
+                btn.style.background = '#f8f9fa';
+                btn.style.color = '#555';
+                btn.style.borderColor = '#dee2e6';
+            } else {
+                btn.innerText = '✅ Saved';
+                btn.style.background = '#d4edda';
+                btn.style.color = '#155724';
+                btn.style.borderColor = '#c3e6cb';
+            }
+
+            // Send request silently in background
+            fetch('/Save/Toggle', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'RequestVerificationToken': document.querySelector(
+                        'input[name="__RequestVerificationToken"]').value
+                },
+                body: 'universityId=' + universityId +
+                      '&programId=' + programId +
+                      '&interGroup=' + encodeURIComponent(interGroup) +
+                      '&marks=' + marks +
+                      '&city=' + encodeURIComponent(city) +
+                      '&budget=' + budget
+            })
+            .then(response => {
+                if (!response.ok) {
+                    // Revert if failed
+                    if (isSaved) {
+                        btn.innerText = '✅ Saved';
+                        btn.style.background = '#d4edda';
+                    } else {
+                        btn.innerText = '🔖 Save';
+                        btn.style.background = '#f8f9fa';
+                    }
+                }
+            })
+            .catch(() => {
+                console.log('Save failed silently');
+            });
+        }
+    </script>
+}

@@ -1,0 +1,71 @@
+﻿@model IEnumerable<UniGuide.Models.QuizQuestion>
+@{
+    ViewData["Title"] = "Quiz Questions";
+    Layout = "_AdminLayout";
+}
+
+<!-- ✅ Replace this header section only -->
+<div style="display: flex; justify-content: space-between;
+    align-items: center; margin-bottom: 24px;">
+    <div>
+        <h4 style="font-weight: 800; color: #1a1a2e; margin-bottom: 4px;">
+            Quiz Questions
+        </h4>
+        <p style="color: #888; margin: 0; font-size: 0.88rem;">
+            @Model.Count() questions in system
+        </p>
+    </div>
+    <a asp-action="AddQuestion"
+           style="background: #0f3460; color: white; padding: 12px 24px;
+        border-radius: 10px; text-decoration: none;
+        font-weight: 600; font-size: 0.9rem;">
+        ➕ Add Question
+    </a>
+</div>
+
+<!-- Table stays exactly the same -->
+<div style="background: white; border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06); overflow: hidden;">
+    <table class="table table-hover mb-0">
+        <thead style="background: #f8f9fa;">
+            <tr>
+                <th style="padding: 16px 20px; font-size: 0.82rem; color: #888;">#</th>
+                <th style="padding: 16px; font-size: 0.82rem; color: #888;">Question</th>
+                <th style="padding: 16px; font-size: 0.82rem; color: #888;">Category</th>
+                <th style="padding: 16px; font-size: 0.82rem; color: #888;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var q in Model)
+            {
+                <tr>
+                    <td style="padding: 16px 20px; color: #888;">#@q.QuestionID</td>
+                    <td style="padding: 16px; color: #1a1a2e; font-size: 0.88rem;
+                        max-width: 400px;">
+                        @q.QuestionText
+                    </td>
+                    <td style="padding: 16px;">
+                        <span style="background: #f3e8fd; color: #6f3a9e;
+                            padding: 3px 10px; border-radius: 10px;
+                            font-size: 0.78rem; font-weight: 600;">
+                            @q.Category
+                        </span>
+                    </td>
+                    <td style="padding: 16px;">
+                        <form asp-action="DeleteQuestion" method="post"
+                              onsubmit="return confirm('Delete this question?')">
+                            <input type="hidden" name="id" value="@q.QuestionID" />
+                            <button type="submit"
+                                    style="background: #f8d7da; color: #721c24;
+                                border: none; padding: 6px 14px;
+                                border-radius: 6px; font-size: 0.8rem;
+                                font-weight: 600; cursor: pointer;">
+                                🗑️ Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

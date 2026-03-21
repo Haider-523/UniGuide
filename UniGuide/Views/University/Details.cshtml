@@ -1,0 +1,99 @@
+﻿@model UniGuide.Models.University
+
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<div class="container mt-4">
+
+    <!-- University Header -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h2>🎓 @Model.Name</h2>
+            <p class="text-muted">
+                📍 @Model.City &nbsp;|&nbsp;
+                🏛️ @Model.Type &nbsp;|&nbsp;
+                🏆 HEC Ranking: #@Model.HECRanking &nbsp;|&nbsp;
+                📅 Est. @Model.EstablishedYear
+            </p>
+            <p>@Model.Description</p>
+            <div>
+                @if (Model.HasHostel)
+                {
+                    <span class="badge bg-success me-1">🏠 Hostel Available</span>
+                }
+                @if (Model.HasTransport)
+                {
+                    <span class="badge bg-info me-1">🚌 Transport Available</span>
+                }
+            </div>
+            <a href="@Model.Website" target="_blank" class="btn btn-outline-primary mt-3">
+                🌐 Visit Website
+            </a>
+        </div>
+    </div>
+
+    <!-- Programs -->
+    <h4 class="mb-3">📚 Available Programs</h4>
+
+    @foreach (var program in Model.Programs ?? new List<UniGuide.Models.Program>())
+    {
+        <div class="card mb-3 shadow-sm">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8">
+                        <h5>@program.ProgramName</h5>
+                        <p class="text-muted mb-1">
+                            ⏱️ Duration: @program.DurationYears years &nbsp;|&nbsp;
+                            🪑 Seats: @program.TotalSeats &nbsp;|&nbsp;
+                            🌅 @program.Shift Shift
+                        </p>
+                        <p class="text-muted mb-1">
+                            📋 Required: @program.RequiredInterGroup
+                        </p>
+                        <p class="text-muted">
+                            📊 Minimum Merit: @program.MinMeritPercent%
+                        </p>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <h4 class="text-success">
+                            PKR @program.FeePerSemester.ToString("N0")
+                        </h4>
+                        <small class="text-muted">per semester</small>
+                    </div>
+                </div>
+
+                <!-- Career Paths -->
+                @if (program.CareerPaths != null && program.CareerPaths.Any())
+                {
+                    <hr />
+                    <h6 class="text-primary">💼 Career Paths after this degree:</h6>
+                    <div class="row">
+                        @foreach (var career in program.CareerPaths)
+                        {
+                            <div class="col-md-4 mb-2">
+                                <div class="border rounded p-2">
+                                    <strong>@career.JobTitle</strong><br />
+                                    <small class="text-success">
+                                        PKR @career.MinSalaryPKR.ToString("N0") -
+                                        @career.MaxSalaryPKR.ToString("N0")
+                                    </small><br />
+                                    <span class="badge bg-warning text-dark">
+                                        @career.DemandLevel Demand
+                                    </span>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    }
+
+    <a asp-action="Index"
+           style="display: inline-block; background: #f0f0f0; color: #555;
+        padding: 12px 24px; border-radius: 10px; text-decoration: none;
+        font-weight: 600; margin: 30px 0 60px;">
+        ← Back to Universities
+    </a>
+</div>

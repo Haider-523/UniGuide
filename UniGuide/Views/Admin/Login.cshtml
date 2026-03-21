@@ -1,0 +1,80 @@
+﻿@model UniGuide.Models.AdminLoginViewModel
+@{
+    ViewData["Title"] = "Admin Login";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Login — UniGuide</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <style>
+            body {
+                background: #1a1a2e;
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+    </style>
+</head>
+<body>
+    <div style="width: 100%; max-width: 420px; padding: 20px;">
+
+        <div class="text-center mb-4">
+            <div style="font-size: 2rem; font-weight: 800; color: white;">
+                🎓 <span style="color: #4fc3f7;">Uni</span>Guide
+            </div>
+            <div style="color: rgba(255,255,255,0.5); font-size: 0.85rem; margin-top: 6px;">
+                Admin Panel
+            </div>
+        </div>
+
+        <div style="background: white; border-radius: 20px; padding: 36px;">
+            <h5 style="font-weight: 700; color: #1a1a2e; margin-bottom: 24px;">
+                🔐 Admin Login
+            </h5>
+
+            <form method="post">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly"
+                     style="background: #f8d7da; border-radius: 8px;
+                    padding: 10px 14px; margin-bottom: 16px;
+                    color: #721c24; font-size: 0.88rem;">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Email</label>
+                    <input asp-for="Email" class="form-control form-control-lg"
+                           placeholder="admin@uniguide.com"
+                           style="border-radius: 10px;" />
+                </div>
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">Password</label>
+                    <input asp-for="Password" type="password"
+                           class="form-control form-control-lg"
+                           placeholder="Password"
+                           style="border-radius: 10px;" />
+                </div>
+
+                <button type="submit"
+                        style="width: 100%; background: #1a1a2e; color: white;
+                    border: none; padding: 14px; border-radius: 10px;
+                    font-weight: 700; font-size: 0.95rem; cursor: pointer;">
+                    Login to Admin Panel →
+                </button>
+            </form>
+        </div>
+
+        <div class="text-center mt-3">
+            <a asp-controller="Home" asp-action="Index"
+                   style="color: rgba(255,255,255,0.4); font-size: 0.82rem; text-decoration: none;">
+                ← Back to UniGuide
+            </a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,50 @@
+﻿@model IEnumerable<UniGuide.Models.University>
+
+@{
+    ViewData["Title"] = "Universities";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">🎓 Universities in Pakistan</h2>
+
+    <div class="row">
+        @foreach (var uni in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title">@uni.Name</h5>
+                        <p class="text-muted mb-1">
+                            📍 @uni.City &nbsp;|&nbsp;
+                            🏛️ @uni.Type
+                        </p>
+                        <p class="text-muted mb-1">
+                            🏆 HEC Ranking: #@uni.HECRanking
+                        </p>
+                        <p class="text-muted mb-2">
+                            📚 Programs: @uni.Programs?.Count
+                        </p>
+                        <p class="mb-3">@uni.Description</p>
+
+                        <div class="mb-2">
+                            @if (uni.HasHostel)
+                            {
+                                <span class="badge bg-success me-1">🏠 Hostel</span>
+                            }
+                            @if (uni.HasTransport)
+                            {
+                                <span class="badge bg-info">🚌 Transport</span>
+                            }
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white">
+                        <a asp-action="Details" asp-route-id="@uni.UniversityID"
+                               class="btn btn-primary w-100">
+                            View Details & Programs
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

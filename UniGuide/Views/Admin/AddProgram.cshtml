@@ -1,0 +1,97 @@
+﻿@model UniGuide.Models.Program
+@{
+    ViewData["Title"] = "Add Program";
+    Layout = "_AdminLayout";
+}
+
+<div style="max-width: 700px;">
+    <div style="margin-bottom: 24px;">
+        <a asp-action="Programs"
+               style="color: #888; text-decoration: none; font-size: 0.88rem;">
+            ← Back to Programs
+        </a>
+        <h4 style="font-weight: 800; color: #1a1a2e; margin-top: 8px;">
+            Add New Program
+        </h4>
+    </div>
+
+    <div style="background: white; border-radius: 16px; padding: 36px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.06);">
+        <form method="post">
+            @Html.AntiForgeryToken()
+            <div class="row g-3">
+                <div class="col-12">
+                    <label class="form-label fw-semibold">University</label>
+                    <select name="UniversityID" class="form-select"
+                            style="border-radius: 8px;" required>
+                        <option value="">-- Select University --</option>
+                        @foreach (var uni in ViewBag.Universities as
+                                                    List<UniGuide.Models.University> ?? new())
+                        {
+                            <option value="@uni.UniversityID">@uni.Name</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-12">
+                    <label class="form-label fw-semibold">Program Name</label>
+                    <input asp-for="ProgramName" class="form-control"
+                           placeholder="e.g. BS Computer Science"
+                           style="border-radius: 8px;" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Duration (Years)</label>
+                    <input asp-for="DurationYears" type="number"
+                           class="form-control" placeholder="4"
+                           style="border-radius: 8px;" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Fee Per Semester (PKR)</label>
+                    <input asp-for="FeePerSemester" type="number"
+                           class="form-control" placeholder="e.g. 45000"
+                           style="border-radius: 8px;" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Minimum Merit %</label>
+                    <input asp-for="MinMeritPercent" type="number"
+                           step="0.1" class="form-control" placeholder="e.g. 65"
+                           style="border-radius: 8px;" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Total Seats</label>
+                    <input asp-for="TotalSeats" type="number"
+                           class="form-control" placeholder="e.g. 100"
+                           style="border-radius: 8px;" />
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Shift</label>
+                    <select asp-for="Shift" class="form-select"
+                            style="border-radius: 8px;">
+                        <option value="Morning">Morning</option>
+                        <option value="Evening">Evening</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Required Inter Group</label>
+                    <input asp-for="RequiredInterGroup" class="form-control"
+                           placeholder="e.g. FSc-PreEngineering,ICS"
+                           style="border-radius: 8px;" />
+                    <small class="text-muted">Separate multiple with comma</small>
+                </div>
+            </div>
+
+            <div style="margin-top: 28px; display: flex; gap: 12px;">
+                <button type="submit"
+                        style="background: #0f3460; color: white; border: none;
+                    padding: 14px 32px; border-radius: 10px;
+                    font-weight: 700; cursor: pointer;">
+                    ✅ Save Program
+                </button>
+                <a asp-action="Programs"
+                       style="background: #f0f0f0; color: #555; padding: 14px 32px;
+                    border-radius: 10px; text-decoration: none; font-weight: 600;">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>

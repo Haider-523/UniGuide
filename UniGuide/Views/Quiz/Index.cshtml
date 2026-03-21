@@ -1,0 +1,97 @@
+﻿@model UniGuide.Models.QuizViewModel
+@{
+    ViewData["Title"] = "Interest Quiz";
+}
+
+<!-- Hero -->
+<div style="background: linear-gradient(135deg, #1a1a2e, #0f3460);
+    padding: 50px 0 40px; text-align: center; color: white;">
+    <div class="container">
+        <div style="display: inline-block; background: rgba(79,195,247,0.15);
+            border: 1px solid rgba(79,195,247,0.3); border-radius: 30px;
+            padding: 5px 18px; font-size: 0.82rem; color: #4fc3f7;
+            margin-bottom: 16px;">
+            🧠 Personality & Interest Quiz
+        </div>
+        <h1 style="font-size: 2rem; font-weight: 800; margin-bottom: 10px;">
+            Discover Your Perfect Field
+        </h1>
+        <p style="opacity: 0.7; font-size: 0.95rem;">
+            Answer 10 quick questions — we'll tell you which degree suits you best
+        </p>
+    </div>
+</div>
+
+<div style="background: #f8f9fa; padding: 40px 0 60px;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+
+                <form asp-action="Submit" method="post">
+
+                    @for (int i = 0; i < Model.Questions!.Count; i++)
+                    {
+                        var q = Model.Questions[i];
+                        <div style="background: white; border-radius: 16px;
+                            padding: 28px; margin-bottom: 20px;
+                            box-shadow: 0 2px 12px rgba(0,0,0,0.06);">
+
+                            <!-- Question number + text -->
+                            <div style="display: flex; gap: 14px; align-items: flex-start;
+                                margin-bottom: 20px;">
+                                <div style="background: #0f3460; color: white; width: 32px;
+                                    height: 32px; border-radius: 50%; display: flex;
+                                    align-items: center; justify-content: center;
+                                    font-size: 0.85rem; font-weight: 700; flex-shrink: 0;">
+                                    @(i + 1)
+                                </div>
+                                <h6 style="font-weight: 700; color: #1a1a2e;
+                                    margin: 0; padding-top: 4px; font-size: 1rem;">
+                                    @q.QuestionText
+                                </h6>
+                            </div>
+
+                            <!-- Options -->
+                            <div style="display: flex; flex-direction: column; gap: 10px;">
+                                @foreach (var opt in new[] {
+                                    ("A", q.OptionA),
+                                    ("B", q.OptionB),
+                                    ("C", q.OptionC),
+                                    ("D", q.OptionD)
+                                })
+                                {
+                                    <label style="display: flex; align-items: center; gap: 12px;
+                                        padding: 12px 16px; border-radius: 10px;
+                                        border: 1.5px solid #e9ecef; cursor: pointer;
+                                        transition: all 0.15s;"
+                                           onmouseover="this.style.borderColor='#0f3460';this.style.background='#f0f4ff'"
+                                           onmouseout="this.style.borderColor='#e9ecef';this.style.background='white'">
+                                        <input type="radio"
+                                               name="answers[@q.QuestionID]"
+                                               value="@opt.Item1"
+                                               style="width: 18px; height: 18px; accent-color: #0f3460;"
+                                               required />
+                                        <span style="color: #444; font-size: 0.93rem;">
+                                            <strong style="color: #0f3460;">@opt.Item1.</strong>
+                                            @opt.Item2
+                                        </span>
+                                    </label>
+                                }
+                            </div>
+                        </div>
+                    }
+
+                    <!-- Submit -->
+                    <button type="submit"
+                            style="width: 100%; background: linear-gradient(135deg, #0f3460, #1a1a2e);
+                        color: white; border: none; padding: 18px;
+                        border-radius: 14px; font-size: 1.05rem;
+                        font-weight: 700; cursor: pointer; margin-top: 8px;">
+                        🎯 Discover My Profile
+                    </button>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,107 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - UniGuide Admin</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <style>
+        body { opacity: 0; animation: fadeIn 0.3s ease forwards; background: #f0f2f5; }
+        @@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .admin-sidebar {
+            width: 250px; min-height: 100vh; background: #1a1a2e;
+            position: fixed; top: 0; left: 0; z-index: 100;
+            padding: 0; overflow-y: auto;
+        }
+        .admin-content {
+            margin-left: 250px; padding: 30px;
+            min-height: 100vh;
+        }
+        .sidebar-link {
+            display: flex; align-items: center; gap: 10px;
+            padding: 12px 24px; color: rgba(255,255,255,0.7);
+            text-decoration: none; font-size: 0.92rem;
+            font-weight: 500; transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+        .sidebar-link:hover, .sidebar-link.active {
+            color: white; background: rgba(255,255,255,0.08);
+            border-left-color: #4fc3f7;
+        }
+        .sidebar-section {
+            padding: 16px 24px 8px;
+            font-size: 0.72rem; font-weight: 700;
+            color: rgba(255,255,255,0.3);
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="admin-sidebar">
+
+    <!-- Logo -->
+    <div style="padding: 24px; border-bottom: 1px solid rgba(255,255,255,0.08);">
+        <div style="color: white; font-size: 1.2rem; font-weight: 800;">
+            🎓 <span style="color: #4fc3f7;">Uni</span>Guide
+        </div>
+        <div style="color: rgba(255,255,255,0.4); font-size: 0.75rem; margin-top: 4px;">
+            Admin Panel
+        </div>
+    </div>
+
+    <!-- Nav -->
+    <nav style="padding: 16px 0;">
+        <div class="sidebar-section">Main</div>
+        <a class="sidebar-link" asp-controller="Admin" asp-action="Dashboard">
+            📊 Dashboard
+        </a>
+
+        <div class="sidebar-section">Content</div>
+        <a class="sidebar-link" asp-controller="Admin" asp-action="Universities">
+            🏛️ Universities
+        </a>
+        <a class="sidebar-link" asp-controller="Admin" asp-action="Programs">
+            📚 Programs
+        </a>
+        <a class="sidebar-link" asp-controller="Admin" asp-action="QuizQuestions">
+            🧠 Quiz Questions
+        </a>
+
+        <a class="sidebar-link" asp-controller="Admin" asp-action="CareerPaths">
+    💼 Career Paths
+</a>
+
+        <div class="sidebar-section">Users</div>
+        <a class="sidebar-link" asp-controller="Admin" asp-action="Students">
+            👥 Students
+        </a>
+
+        <div class="sidebar-section">Account</div>
+        <a class="sidebar-link" asp-controller="Admin" asp-action="Logout">
+            🚪 Logout
+        </a>
+
+        <div style="padding: 24px; margin-top: 20px;
+                    border-top: 1px solid rgba(255,255,255,0.08);">
+            <div style="color: rgba(255,255,255,0.5); font-size: 0.78rem;">
+                Logged in as
+            </div>
+            <div style="color: white; font-size: 0.88rem; font-weight: 600; margin-top: 4px;">
+                @Context.Session.GetString("AdminName")
+            </div>
+        </div>
+    </nav>
+</div>
+
+<!-- Main Content -->
+<div class="admin-content">
+    @RenderBody()
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

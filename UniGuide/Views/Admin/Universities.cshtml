@@ -1,0 +1,82 @@
+﻿@model IEnumerable<UniGuide.Models.University>
+@{
+    ViewData["Title"] = "Universities";
+    Layout = "_AdminLayout";
+}
+
+<div style="display: flex; justify-content: space-between;
+    align-items: center; margin-bottom: 24px;">
+    <div>
+        <h4 style="font-weight: 800; color: #1a1a2e; margin-bottom: 4px;">
+            Universities
+        </h4>
+        <p style="color: #888; margin: 0; font-size: 0.88rem;">
+            @Model.Count() universities in system
+        </p>
+    </div>
+    <a asp-action="AddUniversity"
+           style="background: #0f3460; color: white; padding: 12px 24px;
+        border-radius: 10px; text-decoration: none;
+        font-weight: 600; font-size: 0.9rem;">
+        ➕ Add University
+    </a>
+</div>
+
+<div style="background: white; border-radius: 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06); overflow: hidden;">
+    <table class="table table-hover mb-0">
+        <thead style="background: #f8f9fa;">
+            <tr>
+                <th style="padding: 16px 20px; font-size: 0.82rem;
+                color: #888; font-weight: 600;">University</th>
+                <th style="padding: 16px; font-size: 0.82rem; color: #888;">City</th>
+                <th style="padding: 16px; font-size: 0.82rem; color: #888;">Type</th>
+                <th style="padding: 16px; font-size: 0.82rem; color: #888;">HEC Rank</th>
+                <th style="padding: 16px; font-size: 0.82rem; color: #888;">Programs</th>
+                <th style="padding: 16px; font-size: 0.82rem; color: #888;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var uni in Model)
+            {
+                <tr>
+                    <td style="padding: 16px 20px; font-weight: 600; color: #1a1a2e;">
+                        @uni.Name
+                    </td>
+                    <td style="padding: 16px; color: #555;">@uni.City</td>
+                    <td style="padding: 16px;">
+                        <span style="background: @(uni.Type == "Public" ? "#d4edda" : "#e8f4fd");
+                            color: @(uni.Type == "Public" ? "#155724" : "#0f3460");
+                            padding: 3px 10px; border-radius: 10px; font-size: 0.78rem;
+                            font-weight: 600;">
+                            @uni.Type
+                        </span>
+                    </td>
+                    <td style="padding: 16px; color: #555;">#@uni.HECRanking</td>
+                    <td style="padding: 16px; color: #555;">@uni.Programs?.Count</td>
+                    <td style="padding: 16px;">
+                        <div style="display: flex; gap: 8px;">
+                            <a asp-action="EditUniversity" asp-route-id="@uni.UniversityID"
+                                   style="background: #fff3cd; color: #856404; padding: 6px 14px;
+                                border-radius: 6px; text-decoration: none;
+                                font-size: 0.8rem; font-weight: 600;">
+                                ✏️ Edit
+                            </a>
+                            <form asp-action="DeleteUniversity" method="post"
+                                  onsubmit="return confirm('Delete @uni.Name?')">
+                                <input type="hidden" name="id" value="@uni.UniversityID" />
+                                <button type="submit"
+                                        style="background: #f8d7da; color: #721c24;
+                                    border: none; padding: 6px 14px;
+                                    border-radius: 6px; font-size: 0.8rem;
+                                    font-weight: 600; cursor: pointer;">
+                                    🗑️ Delete
+                                </button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

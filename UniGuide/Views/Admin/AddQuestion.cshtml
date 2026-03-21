@@ -1,0 +1,129 @@
+﻿@model UniGuide.Models.QuizQuestion
+@{
+    ViewData["Title"] = "Add Quiz Question";
+    Layout = "_AdminLayout";
+}
+
+<div style="max-width: 700px;">
+    <div style="margin-bottom: 24px;">
+        <a asp-action="QuizQuestions"
+               style="color: #888; text-decoration: none; font-size: 0.88rem;">
+            ← Back to Quiz Questions
+        </a>
+        <h4 style="font-weight: 800; color: #1a1a2e; margin-top: 8px;">
+            Add New Quiz Question
+        </h4>
+    </div>
+
+    <div style="background: white; border-radius: 16px; padding: 36px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.06);">
+        <form method="post">
+            @Html.AntiForgeryToken()
+            <div class="row g-3">
+
+                <div class="col-12">
+                    <label class="form-label fw-semibold">Question Text</label>
+                    <textarea asp-for="QuestionText" class="form-control" rows="3"
+                              placeholder="e.g. What subject do you enjoy most?"
+                              style="border-radius: 8px;"></textarea>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">
+                        Option A
+                        <span style="color: #0f3460; font-size: 0.78rem;">
+                            (Tech answer)
+                        </span>
+                    </label>
+                    <input asp-for="OptionA" class="form-control"
+                           placeholder="Tech-related option"
+                           style="border-radius: 8px;" />
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">
+                        Option B
+                        <span style="color: #28a745; font-size: 0.78rem;">
+                            (Medical answer)
+                        </span>
+                    </label>
+                    <input asp-for="OptionB" class="form-control"
+                           placeholder="Medical-related option"
+                           style="border-radius: 8px;" />
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">
+                        Option C
+                        <span style="color: #856404; font-size: 0.78rem;">
+                            (Business answer)
+                        </span>
+                    </label>
+                    <input asp-for="OptionC" class="form-control"
+                           placeholder="Business-related option"
+                           style="border-radius: 8px;" />
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">
+                        Option D
+                        <span style="color: #6f3a9e; font-size: 0.78rem;">
+                            (Arts answer)
+                        </span>
+                    </label>
+                    <input asp-for="OptionD" class="form-control"
+                           placeholder="Arts-related option"
+                           style="border-radius: 8px;" />
+                </div>
+
+                <div class="col-12">
+                    <label class="form-label fw-semibold">Category</label>
+                    <select asp-for="Category" class="form-select"
+                            style="border-radius: 8px;">
+                        <option value="">-- Select Category --</option>
+                        <option value="Interest">Interest</option>
+                        <option value="Subject">Subject</option>
+                        <option value="Career">Career</option>
+                        <option value="ProblemType">Problem Type</option>
+                        <option value="WorkStyle">Work Style</option>
+                        <option value="Mindset">Mindset</option>
+                        <option value="Skill">Skill</option>
+                    </select>
+                </div>
+
+                <!-- Reminder box -->
+                <div class="col-12">
+                    <div style="background: #e8f4fd; border-radius: 10px;
+                        padding: 14px 18px; border-left: 4px solid #0f3460;">
+                        <p style="color: #0f3460; font-size: 0.85rem;
+                            font-weight: 600; margin-bottom: 4px;">
+                            📌 Important Rule:
+                        </p>
+                        <p style="color: #555; font-size: 0.82rem; margin: 0;">
+                            Always follow this pattern for quiz scoring to work correctly:
+                            <strong>A = Tech</strong>,
+                            <strong>B = Medical</strong>,
+                            <strong>C = Business</strong>,
+                            <strong>D = Arts</strong>
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div style="margin-top: 28px; display: flex; gap: 12px;">
+                <button type="submit"
+                        style="background: #0f3460; color: white; border: none;
+                    padding: 14px 32px; border-radius: 10px;
+                    font-weight: 700; cursor: pointer;">
+                    ✅ Save Question
+                </button>
+                <a asp-action="QuizQuestions"
+                       style="background: #f0f0f0; color: #555; padding: 14px 32px;
+                    border-radius: 10px; text-decoration: none; font-weight: 600;">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>

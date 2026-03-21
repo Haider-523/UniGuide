@@ -1,0 +1,73 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "_AdminLayout";
+}
+
+<!-- Header -->
+<div style="margin-bottom: 28px;">
+    <h4 style="font-weight: 800; color: #1a1a2e; margin-bottom: 4px;">Dashboard</h4>
+    <p style="color: #888; margin: 0; font-size: 0.88rem;">
+        Welcome back, @Context.Session.GetString("AdminName")
+    </p>
+</div>
+
+<!-- Stats -->
+<div class="row g-3 mb-4">
+    @foreach (var stat in new[] {
+        ("🏛️", "Universities", ViewBag.UniversityCount.ToString(), "#e8f4fd", "#0f3460",
+            "Admin", "Universities"),
+        ("📚", "Programs", ViewBag.ProgramCount.ToString(), "#d4edda", "#155724",
+            "Admin", "Programs"),
+        ("👥", "Students", ViewBag.StudentCount.ToString(), "#fff3cd", "#856404",
+            "Admin", "Students"),
+        ("🧠", "Quiz Questions", ViewBag.QuizCount.ToString(), "#f3e8fd", "#6f3a9e",
+            "Admin", "QuizQuestions")
+    })
+    {
+        <div class="col-md-3">
+            <a asp-controller="@stat.Item6" asp-action="@stat.Item7"
+                   style="text-decoration: none;">
+                <div style="background: @stat.Item4; border-radius: 16px;
+                    padding: 24px; text-align: center;
+                    transition: transform 0.2s;"
+                     onmouseover="this.style.transform='translateY(-4px)'"
+                     onmouseout="this.style.transform='translateY(0)'">
+                    <div style="font-size: 2rem; margin-bottom: 8px;">@stat.Item1</div>
+                    <div style="font-size: 2rem; font-weight: 800; color: @stat.Item5;">
+                        @stat.Item3
+                    </div>
+                    <div style="font-size: 0.82rem; color: @stat.Item5;
+                        opacity: 0.8; margin-top: 4px;">
+                        @stat.Item2
+                    </div>
+                </div>
+            </a>
+        </div>
+    }
+</div>
+
+<!-- Quick Actions -->
+<div style="background: white; border-radius: 16px; padding: 28px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);">
+    <h6 style="font-weight: 700; color: #1a1a2e; margin-bottom: 20px;">
+        ⚡ Quick Actions
+    </h6>
+    <div style="display: flex; flex-wrap: wrap; gap: 12px;">
+        @foreach (var action in new[] {
+            ("➕ Add University", "Admin", "AddUniversity", "#0f3460"),
+            ("➕ Add Program", "Admin", "AddProgram", "#155724"),
+            ("👁️ View Students", "Admin", "Students", "#856404"),
+            ("🌐 View Website", "Home", "Index", "#555")
+        })
+        {
+            <a asp-controller="@action.Item2" asp-action="@action.Item3"
+                   style="background: @action.Item4; color: white; padding: 12px 20px;
+                border-radius: 10px; text-decoration: none; font-size: 0.88rem;
+                font-weight: 600; transition: opacity 0.2s;"
+                   onmouseover="this.style.opacity='0.85'"
+                   onmouseout="this.style.opacity='1'">
+                @action.Item1
+            </a>
+        }
+    </div>
+</div>

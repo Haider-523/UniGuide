@@ -1,0 +1,248 @@
+﻿@model UniGuide.Models.Student
+@{
+    ViewData["Title"] = "My Dashboard";
+}
+
+<div style="background: #f8f9fa; min-height: 90vh; padding: 40px 0;">
+    <div class="container">
+
+        <!-- Welcome Header -->
+        <div style="background: linear-gradient(135deg, #1a1a2e, #0f3460);
+            border-radius: 20px; padding: 36px 40px; color: white;
+            margin-bottom: 28px; display: flex;
+            align-items: center; justify-content: space-between;
+            flex-wrap: wrap; gap: 20px;">
+            <div>
+                <p style="color: #4fc3f7; font-size: 0.88rem;
+                    font-weight: 600; margin-bottom: 6px;">
+                    Welcome back 👋
+                </p>
+                <h2 style="font-weight: 800; margin-bottom: 8px;">
+                    @Model.FullName
+                </h2>
+                <p style="opacity: 0.7; margin: 0; font-size: 0.9rem;">
+                    📍 @Model.City &nbsp;|&nbsp;
+                    📚 @Model.InterGroup &nbsp;|&nbsp;
+                    📊 @Model.InterMarksPercent% marks
+                </p>
+            </div>
+            <a asp-controller="Match" asp-action="Index"
+                   style="background: #4fc3f7; color: #1a1a2e; font-weight: 700;
+                padding: 14px 28px; border-radius: 12px;
+                text-decoration: none; font-size: 0.95rem;
+                white-space: nowrap;">
+                🔍 Find Universities
+            </a>
+        </div>
+
+        <div class="row g-4">
+
+            <!-- Left Column -->
+            <div class="col-lg-4">
+
+                <!-- Profile Card -->
+                <div style="background: white; border-radius: 16px; padding: 28px;
+                    box-shadow: 0 2px 16px rgba(0,0,0,0.07); margin-bottom: 24px;">
+                    <h6 style="font-weight: 700; color: #1a1a2e; margin-bottom: 20px;
+                        padding-bottom: 12px; border-bottom: 1px solid #f0f0f0;">
+                        👤 My Profile
+                    </h6>
+                    @foreach (var item in new[] {
+                        ("📧 Email", Model.Email ?? "—"),
+                        ("🎓 Inter Group", Model.InterGroup ?? "—"),
+                        ("📊 Marks", Model.InterMarksPercent + "%"),
+                        ("📍 City", Model.City ?? "—"),
+                        ("💰 Budget/Sem", "PKR " + Model.BudgetPerSemester.ToString("N0")),
+                        ("📅 Joined", Model.CreatedAt.ToString("MMM dd, yyyy"))
+                    })
+                    {
+                        <div style="display: flex; justify-content: space-between;
+                            padding: 8px 0; border-bottom: 1px solid #f8f8f8;">
+                            <span style="color: #888; font-size: 0.85rem;">@item.Item1</span>
+                            <span style="color: #1a1a2e; font-size: 0.85rem;
+                            font-weight: 600;">@item.Item2</span>
+                        </div>
+                    }
+                </div>
+
+                <!-- Quiz Results Card -->
+                <div style="background: white; border-radius: 16px; padding: 28px;
+                    box-shadow: 0 2px 16px rgba(0,0,0,0.07);">
+                    <h6 style="font-weight: 700; color: #1a1a2e; margin-bottom: 20px;
+                        padding-bottom: 12px; border-bottom: 1px solid #f0f0f0;">
+                        🧠 Quiz Results
+                    </h6>
+                    @if (Model.QuizResults != null && Model.QuizResults.Any())
+                    {
+                        var latest = Model.QuizResults
+                            .OrderByDescending(q => q.TakenAt).First();
+                        <div style="background: linear-gradient(135deg, #1a1a2e, #0f3460);
+                            border-radius: 12px; padding: 20px; color: white;
+                            text-align: center; margin-bottom: 16px;">
+                            <div style="font-size: 2rem; margin-bottom: 8px;">🎯</div>
+                            <div style="font-weight: 700; font-size: 1.1rem;">
+                                @latest.InterestProfile
+                            </div>
+                            <div style="opacity: 0.7; font-size: 0.8rem; margin-top: 4px;">
+                                @latest.TakenAt.ToString("MMM dd, yyyy")
+                            </div>
+                        </div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                            @foreach (var field in (latest.RecommendedField ?? "").Split(','))
+                            {
+                                <span style="background: #e8f4fd; color: #0f3460;
+                                    padding: 4px 12px; border-radius: 15px;
+                                    font-size: 0.78rem; font-weight: 600;">
+                                    @field.Trim()
+                                </span>
+                            }
+                        </div>
+                        <a asp-controller="Quiz" asp-action="Index"
+                               style="display: block; text-align: center; margin-top: 16px;
+                            color: #0f3460; font-size: 0.85rem; font-weight: 600;
+                            text-decoration: none;">
+                            ↺ Retake Quiz
+                        </a>
+                    }
+                    else
+                    {
+                        <div style="text-align: center; padding: 20px 0;">
+                            <div style="font-size: 2.5rem; margin-bottom: 12px;">🧩</div>
+                            <p style="color: #888; font-size: 0.88rem; margin-bottom: 16px;">
+                                You haven't taken the quiz yet
+                            </p>
+                            <a asp-controller="Quiz" asp-action="Index"
+                                   style="background: #0f3460; color: white; padding: 10px 24px;
+                                border-radius: 8px; text-decoration: none;
+                                font-size: 0.88rem; font-weight: 600;">
+                                Take Quiz Now
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="col-lg-8">
+
+                <!-- Stats Row -->
+                <div class="row g-3 mb-4">
+                    @foreach (var stat in new[] {
+                        ("🏛️", "Saved Universities",
+                            (Model.SavedUniversities?.Count ?? 0).ToString(), "#e8f4fd", "#0f3460"),
+                        ("🧠", "Quizzes Taken",
+                            (Model.QuizResults?.Count ?? 0).ToString(), "#d4edda", "#155724"),
+                        ("📊", "Your Marks",
+                            Model.InterMarksPercent + "%", "#fff3cd", "#856404")
+                    })
+                    {
+                        <div class="col-md-4">
+                            <div style="background: @stat.Item4; border-radius: 14px;
+                                padding: 20px; text-align: center;">
+                                <div style="font-size: 1.8rem; margin-bottom: 6px;">
+                                    @stat.Item1
+                                </div>
+                                <div style="font-size: 1.6rem; font-weight: 800;
+                                    color: @stat.Item5;">
+                                    @stat.Item3
+                                </div>
+                                <div style="font-size: 0.8rem; color: @stat.Item5;
+                                    opacity: 0.8; margin-top: 2px;">
+                                    @stat.Item2
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <!-- Saved Universities -->
+                <div style="background: white; border-radius: 16px; padding: 28px;
+                    box-shadow: 0 2px 16px rgba(0,0,0,0.07);">
+                    <div style="display: flex; justify-content: space-between;
+                        align-items: center; margin-bottom: 20px;
+                        padding-bottom: 12px; border-bottom: 1px solid #f0f0f0;">
+                        <h6 style="font-weight: 700; color: #1a1a2e; margin: 0;">
+                            🔖 Saved Universities
+                        </h6>
+                        <a asp-controller="University" asp-action="Index"
+                               style="color: #0f3460; font-size: 0.85rem;
+                            font-weight: 600; text-decoration: none;">
+                            Browse More →
+                        </a>
+                    </div>
+
+                    @if (Model.SavedUniversities != null && Model.SavedUniversities.Any())
+                    {
+                        @foreach (var saved in Model.SavedUniversities)
+                        {
+                            <div style="border: 1.5px solid #f0f0f0; border-radius: 12px;
+                                padding: 18px 20px; margin-bottom: 12px;
+                                display: flex; justify-content: space-between;
+                                align-items: center; flex-wrap: wrap; gap: 12px;">
+                                <div>
+                                    <p style="font-weight: 700; color: #1a1a2e;
+                                        margin-bottom: 4px; font-size: 0.95rem;">
+                                        @saved.Program?.ProgramName
+                                    </p>
+                                    <p style="color: #666; font-size: 0.83rem; margin: 0;">
+                                        🏛️ @saved.University?.Name &nbsp;|&nbsp;
+                                        📍 @saved.University?.City &nbsp;|&nbsp;
+                                        💰 PKR @saved.Program?.FeePerSemester.ToString("N0")/sem
+                                    </p>
+                                </div>
+                                <a asp-controller="University"
+                                       asp-action="Details"
+                                       asp-route-id="@saved.UniversityID"
+                                       style="background: #f0f4ff; color: #0f3460;
+                                    padding: 8px 16px; border-radius: 8px;
+                                    text-decoration: none; font-size: 0.83rem;
+                                    font-weight: 600; white-space: nowrap;">
+                                    View →
+                                </a>
+                            </div>
+                            <div style="display: flex; gap: 8px; align-items: center;">
+                                <a asp-controller="University"
+                                       asp-action="Details"
+                                       asp-route-id="@saved.UniversityID"
+                                       style="background: #f0f4ff; color: #0f3460;
+                                    padding: 8px 16px; border-radius: 8px;
+                                    text-decoration: none; font-size: 0.83rem;
+                                    font-weight: 600; white-space: nowrap;">
+                                    View →
+                                </a>
+                                <form asp-controller="University" asp-action="Unsave"
+                                      method="post" style="display: inline;"
+                                      onsubmit="return confirm('Remove from saved?')">
+                                    <input type="hidden" name="savedId" value="@saved.SavedID" />
+                                    <button type="submit"
+                                            style="background: #f8d7da; color: #721c24;
+                                        border: none; padding: 8px 14px;
+                                        border-radius: 8px; font-size: 0.83rem;
+                                        font-weight: 600; cursor: pointer;">
+                                        🗑️
+                                    </button>
+                                </form>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <div style="text-align: center; padding: 30px 0;">
+                            <div style="font-size: 3rem; margin-bottom: 12px;">🔖</div>
+                            <p style="color: #888; font-size: 0.9rem; margin-bottom: 16px;">
+                                No saved universities yet
+                            </p>
+                            <a asp-controller="Match" asp-action="Index"
+                                   style="background: #0f3460; color: white;
+                                padding: 10px 24px; border-radius: 8px;
+                                text-decoration: none; font-size: 0.88rem;
+                                font-weight: 600;">
+                                Find Universities
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

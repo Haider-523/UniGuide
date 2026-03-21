@@ -1,0 +1,121 @@
+﻿@model UniGuide.Models.CareerPath
+@{
+    ViewData["Title"] = "Add Career Path";
+    Layout = "_AdminLayout";
+}
+
+<div style="max-width: 700px;">
+    <div style="margin-bottom: 24px;">
+        <a asp-action="CareerPaths"
+               style="color: #888; text-decoration: none; font-size: 0.88rem;">
+            ← Back to Career Paths
+        </a>
+        <h4 style="font-weight: 800; color: #1a1a2e; margin-top: 8px;">
+            Add New Career Path
+        </h4>
+    </div>
+
+    <div style="background: white; border-radius: 16px; padding: 36px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.06);">
+        <form method="post">
+            @Html.AntiForgeryToken()
+            <div class="row g-3">
+
+                <div class="col-12">
+                    <label class="form-label fw-semibold">Program</label>
+                    <select name="ProgramID" class="form-select"
+                            style="border-radius: 8px;" required>
+                        <option value="">-- Select Program --</option>
+                        @foreach (var prog in ViewBag.Programs as
+                                                    List<UniGuide.Models.Program> ?? new())
+                        {
+                            <option value="@prog.ProgramID">
+                                @prog.ProgramName — @prog.University?.Name
+                            </option>
+                        }
+                    </select>
+                </div>
+
+                <div class="col-12">
+                    <label class="form-label fw-semibold">Job Title</label>
+                    <input asp-for="JobTitle" class="form-control"
+                           placeholder="e.g. Software Engineer"
+                           style="border-radius: 8px;" />
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">
+                        Min Salary (PKR)
+                    </label>
+                    <input asp-for="MinSalaryPKR" type="number"
+                           class="form-control" placeholder="e.g. 80000"
+                           style="border-radius: 8px;" />
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">
+                        Max Salary (PKR)
+                    </label>
+                    <input asp-for="MaxSalaryPKR" type="number"
+                           class="form-control" placeholder="e.g. 200000"
+                           style="border-radius: 8px;" />
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Industry Type</label>
+                    <select asp-for="IndustryType" class="form-select"
+                            style="border-radius: 8px;">
+                        <option value="">-- Select Industry --</option>
+                        <option value="IT">IT</option>
+                        <option value="Engineering">Engineering</option>
+                        <option value="Healthcare">Healthcare</option>
+                        <option value="Finance">Finance</option>
+                        <option value="Business">Business</option>
+                        <option value="Media">Media</option>
+                        <option value="Education">Education</option>
+                        <option value="Research">Research</option>
+                        <option value="Law">Law</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Demand Level</label>
+                    <select asp-for="DemandLevel" class="form-select"
+                            style="border-radius: 8px;">
+                        <option value="">-- Select Level --</option>
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
+                    </select>
+                </div>
+
+                <div class="col-12">
+                    <label class="form-label fw-semibold">
+                        Skills Required
+                    </label>
+                    <input asp-for="SkillRequired" class="form-control"
+                           placeholder="e.g. Python, SQL, Machine Learning"
+                           style="border-radius: 8px;" />
+                    <small class="text-muted">Separate skills with comma</small>
+                </div>
+
+            </div>
+
+            <div style="margin-top: 28px; display: flex; gap: 12px;">
+                <button type="submit"
+                        style="background: #0f3460; color: white; border: none;
+                    padding: 14px 32px; border-radius: 10px;
+                    font-weight: 700; cursor: pointer;">
+                    ✅ Save Career Path
+                </button>
+                <a asp-action="CareerPaths"
+                       style="background: #f0f0f0; color: #555; padding: 14px 32px;
+                    border-radius: 10px; text-decoration: none;
+                    font-weight: 600;">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
